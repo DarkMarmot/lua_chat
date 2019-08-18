@@ -4,6 +4,24 @@
             <button phx-click="submit_cats">Submit to Cats</button>
             <button phx-click="eat_cats">Eat Cats</button>
         </div>
+
+        <div class="form-group">
+            <input hidden="true" autocomplete="false" />
+            <%= form_for @message, "#", [phx_submit: :submit_message], fn _f ->  %>
+            <%= text_input :message, :content, placeholder: "Tell us your thoughts..." %>
+            <% end %>
+        </div>
+        <ul>
+            <%=for m <- @messages do %>
+                <%= m %><br/>
+            <% end %>
+        </ul>
+
         <%= @deploy_step %>
+        <div>
+            <textarea phx-keyup="submit_code"><%= @lua_code %></textarea>
+            <button phx-click="apply_code">Update Code</button>
+        </div>
+
     </div>
 </div>
