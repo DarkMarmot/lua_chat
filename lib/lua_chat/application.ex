@@ -10,6 +10,7 @@ defmodule LuaChat.Application do
     children = [
       # Start the endpoint when the application starts
       LuaChatWeb.Endpoint
+
       # Starts a worker by calling: LuaChat.Worker.start_link(arg)
       # {LuaChat.Worker, arg},
     ]
