@@ -21,6 +21,8 @@ defmodule LuaChatWeb.HomeView do
   end
 
 
+
+
   def handle_event("submit_cats", _value, socket) do
     {:noreply, assign(socket, deploy_step: "Cats deploy...")}
   end
@@ -37,9 +39,41 @@ defmodule LuaChatWeb.HomeView do
 
   def handle_info({:ship_status, ship}, socket) do
     v = inspect(ship.velocity)
-    status = inspect(ship.ai_error)
-    {:noreply, assign(socket, ship_status: v, code_status: status)}
+#    status = inspect(ship.ai_error)
+#    "...compilation sucessful, ai engaged..."
+
+#    display_values =
+#    [:speed, :facing, :position]
+#    |> Enum.into(%{}, fn k -> {k, Map.get(ship, k)} end)
+#    |> Map.put(:code_status, get_compilation_status_message(ship.ai_error))
+#    |> Map.to_list()
+
+    display_values = %{
+      hull: render_number(ship.hull, 0),
+      energy: render_number(ship.hull, 0),
+      speed: render_number(ship.speed, 2),
+      facing: render_number(ship.facing, 2),
+      position: ship.position,
+      code_status: get_compilation_status_message(ship.ai_error)
+    }
+
+    {:noreply, assign(socket, display_values)}
   end
+
+  def get_compilation_status_message(status) do
+    case status do
+      nil -> "...compilation sucessful, ai engaged..."
+      :ai_timeout_error -> "...ai crawling, timeout error..."
+      :ai_runtime_error -> "...system crashing, ai runtime error..."
+      :ai_could_not_compile -> "...ai compilation failure..."
+      :no_ai -> "...ai cleared, preparing to compile..."
+    end
+  end
+
+  def render_number(number, digits) do
+    :erlang.float_to_binary(number / 1, [decimals: digits])
+  end
+
   def mount(_session, socket) do
 
     if connected?(socket), do: Warzone.BattleServer.join()
@@ -48,7 +82,8 @@ defmodule LuaChatWeb.HomeView do
 #    types = %{code_content: :string, code_error: :string}
 #    cs = Ecto.Changeset.cast({data, types}, %{code_content: "world", code_error: "hello"}, [:code_content, :code_error])
 
-    {:ok, assign(socket, yum: "", code_content: "", ship_status: "", code_status: "", message: nil, deploy_step: "Ready!", messages: ["dog", "bunny"])}
+
+    {:ok, assign(socket, hull: 0, energy: 0, speed: 0, facing: 0, position: [0, 0], code_content: "", code_status: "")}
   end
 
 end

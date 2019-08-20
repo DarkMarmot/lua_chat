@@ -1,42 +1,35 @@
-<div class="container">
-    <div>
-        <div>
-            <button phx-click="submit_cats">Submit to Cats</button>
-            <button phx-click="eat_cats">Eat Cats</button>
-        </div>
 
-        <div>
-            <!-- User input -->
-            <div>
-                <form phx-change="submit_code">
-                    <textarea  autofocus name="code_content" phx-change="submit_code"><%= @code_content %></textarea>
+<div class="space_layout">
+    <div style="position: relative; display: flex;">
+        <div class="title_fade">Lua</div>
+        <div class="title">Sandbox War</div>
+    </div>
+        <div id="code_block">
+            <div class="flash_note">
+                <%= @code_status %>
+            </div>
+            <div class="fill">
+                <form class="fill" phx-change="submit_code">
+                    <textarea class="text_panel lua_code" placeholder="Lua AI" autofocus name="code_content" phx-change="submit_code"><%= @code_content %></textarea>
                 </form>
             </div>
 
             <div >
-                <%= @code_status %>
-            </div>
-            <div >
-                <%= @ship_status %>
+                <%= @speed %>
             </div>
         </div>
 
+        <div id="space_block">
 
-        <ul>
-            <%=for m <- @messages do %>
-                <%= m %><br/>
-            <% end %>
-        </ul>
+            <div class="fill space_panel">
+                <div><%= @facing %></div>
+                <div class="ship" style="transform: rotate(<%= @facing %>deg)"></div>
 
-
+            </div>
 
         </div>
 
 
-        <div>
 
-            <button phx-click="apply_code">Update Code</button>
-        </div>
-
-    </div>
 </div>
+
